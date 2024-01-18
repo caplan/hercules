@@ -5,14 +5,17 @@ inputs:
   args:
     description: "hercules command line arguments"
     required: false
-    default: "--burndown --burndown-people --devs --couples"
+    default: "--burndown --burndown-people --devs --couples --people-dict=peeps"
 runs:
   using: "docker"
   image: "docker://srcd/hercules:latest"
   args:
     - "/bin/bash"
     - "-c"
-    - "hercules ${{ inputs.args }} --pb . | labours -m all -f pb --disable-projector -o hercules_charts
+    - "pip install 'matplotlib==3.2.0'
+       && echo roger
+	   && pwd
+       && hercules ${{ inputs.args }} --pb . | labours -m all -f pb --disable-projector -o hercules_charts
        && cd hercules_charts
        && tar -cf ../hercules_charts.tar * ../hercules_charts_*
        && cd ..
